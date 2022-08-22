@@ -1,7 +1,7 @@
-<canvas id="canvas" style="width:300px;height:300px;background-color: black;"></canvas>
+<canvas id="canvas" style="width:500px;height:500px;background-color: black;"></canvas>
 <script>
 const SIMULATION_SPEED = 30;
-const VELOCITY_STEP_SIZE = 5; // in terms of seconds
+const VELOCITY_STEP_SIZE = 10; // in terms of seconds
 let G = 80
 
 class Body {
@@ -17,9 +17,10 @@ class Body {
 }
 
 let bodies = [
-    new Body(1, 100,100,1,0),
-    new Body(1, 200,200,0,0),
-    //new Body(100, 10,10,1,1),
+    new Body(1, 300,200,4,0),
+    new Body(1, 250,270,-1,-0.4),
+    new Body(1, 350,200,-3,0),
+    new Body(0.5, 250,250,0,0),
 ]
 
 function setupCanvas(canvas) {
@@ -67,20 +68,18 @@ function run(canvas, ctx) {
             b2 = bodies[j];
 
             // f = ma, so f/m = a
-            dirx = (b2.x > b1.x) ? 1 : -1
+            r2 = (b2.x - b1.x)**2 + (b2.y - b1.y)**2
+            dist = Math.sqrt(r2)
+            f = Math.min(G*b1.m*b2.m/r2,0.1)
+            console.log(f)
+            fx = f*(b2.x - b1.x)/dist
+            fy = f*(b2.y - b1.y)/dist
 
-            rx2 = (b2.x - b1.x)**2
-            fx = G*b1.m*b2.m/rx2
-            b1.ax += dirx*fx/b1.m
-            b2.ax += -dirx*fx/b2.m
-
-            diry = (b2.y > b1.y) ? 1 : -1
-
-            ry2 = (b1.y - b2.y)**2
-            fy = G*b1.m*b2.m/ry2
-            b1.ay += diry*fy/b1.m
-            b2.ay += -diry*fy/b2.m
-            console.log(fx, fy);
+            b1.ax += fx/b1.m
+            b2.ax -= fx/b2.m
+            b1.ay += fy/b1.m
+            b2.ay -= fy/b2.m
+            //console.log(fx, fy);
         }
     }
 
