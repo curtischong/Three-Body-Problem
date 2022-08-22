@@ -1,0 +1,117 @@
+<canvas id="canvas" style="width:300px;height:300px;background-color: black;"></canvas>
+<script>
+const SIMULATION_SPEED = 30;
+const VELOCITY_STEP_SIZE = 5; // in terms of seconds
+let G = 80
+
+class Body {
+  constructor(m, x, y, vx, vy) {
+    this.m = m;
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.ax = 0;
+    this.ay = 0;
+  }
+}
+
+let bodies = [
+    new Body(1, 100,100,1,0),
+    new Body(1, 200,200,0,0),
+    //new Body(100, 10,10,1,1),
+]
+
+function setupCanvas(canvas) {
+  // Fixes the DPI of the canvas
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
+//this reads the javascript array that contains all of the snowflakes and draws them onto the canvas (each snowflake has its own opacity, colour, x,y coords etc. and the draw command renders it)
+function drawBodies(ctx) {
+    bodies.forEach((body) => {
+        let radius = 2;
+        ctx.beginPath();
+        ctx.arc(body.x, body.y, radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#f0d3e7';
+        ctx.stroke();
+    });
+}
+
+function run(canvas, ctx) {
+    //console.log(bodies);
+    let canvasW = canvas.width;
+    let canvasH = canvas.height;
+    let n = bodies.length;
+    // reset acceleration
+    for(let i = 0; i < n; i++){
+        b = bodies[i];
+        b.ax = 0;
+        b.ay = 0;
+        bodies[i] = b;
+    }
+
+    // figure out new accelerations between each pair of bodies
+    for(let i = 0; i < n; i++){
+        for(let j = i + 1; j < n; j++){
+            b1 = bodies[i];
+            b2 = bodies[j];
+
+            // f = ma, so f/m = a
+            dirx = (b2.x > b1.x) ? 1 : -1
+
+            rx2 = (b2.x - b1.x)**2
+            fx = G*b1.m*b2.m/rx2
+            b1.ax += dirx*fx/b1.m
+            b2.ax += -dirx*fx/b2.m
+
+            diry = (b2.y > b1.y) ? 1 : -1
+
+            ry2 = (b1.y - b2.y)**2
+            fy = G*b1.m*b2.m/ry2
+            b1.ay += diry*fy/b1.m
+            b2.ay += -diry*fy/b2.m
+            console.log(fx, fy);
+        }
+    }
+
+    // figure out new velocities and positions
+    for(let i = 0; i < n; i++){
+        b = bodies[i];
+        b.vx += VELOCITY_STEP_SIZE*b.ax
+        b.vy += VELOCITY_STEP_SIZE*b.ay
+
+        b.x += b.vx
+        b.y += b.vy
+        bodies[i] = b
+    }
+
+
+    ctx.clearRect(0, 0, canvasW, canvasH);
+    drawBodies(ctx);
+}
+
+function init_binary_snowflakes() {
+    let drawingCanvas = document.getElementById("canvas");
+    drawingCanvas.width = window.innerWidth; //document.width is obsolete
+    drawingCanvas.height = window.innerHeight;
+
+    ctx = setupCanvas(drawingCanvas);
+    ctx.font = "30px Arial";
+
+    setInterval(function () {
+        run(drawingCanvas, ctx);
+    }, SIMULATION_SPEED); //this is the cycle
+}
+
+init_binary_snowflakes();
+</script>
