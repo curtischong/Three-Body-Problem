@@ -19,12 +19,14 @@ class Body {
 }
 const SUN_COLOR = "#fff39c";
 const SUN_R = 5;
+// if you don't want the bodies to be off centered, make the
+// initial momentums sum to 0
 let bodies = [
     new Body(10, 300,200,4,-0.4, SUN_R , SUN_COLOR),
     new Body(10, 250,270,-1,-0.4, SUN_R, SUN_COLOR),
-    new Body(10, 100,220,-1,-0.4, SUN_R, SUN_COLOR),
-    new Body(10, 350,200,-3,1, SUN_R, SUN_COLOR),
-    new Body(1, 250,250,0,0, 2, "#fa438c"),
+    new Body(10, 100,220,0,-0.4, SUN_R, SUN_COLOR),
+    new Body(10, 350,200,-3,1.2, SUN_R, SUN_COLOR),
+    new Body(1, 250,250,0,-1, 2, "#fa438c"),
     new Body(3, 150,120,0,0, 2, "#322bff"),
     new Body(1, 250,100,0,1, 2, "#78faff"),
 ]
