@@ -1,11 +1,11 @@
 <canvas id="canvas" style="width:500px;height:500px;background-color: black;"></canvas>
 <script>
-const SIMULATION_SPEED = 30;
+const SIMULATION_SPEED = 25;
 const VELOCITY_STEP_SIZE = 10; // in terms of seconds
-let G = 80
+let G = 100
 
 class Body {
-  constructor(m, x, y, vx, vy) {
+  constructor(m, x, y, vx, vy, r, color) {
     this.m = m;
     this.x = x;
     this.y = y;
@@ -13,14 +13,20 @@ class Body {
     this.vy = vy;
     this.ax = 0;
     this.ay = 0;
+    this.r = r
+    this.color = color
   }
 }
-
+const SUN_COLOR = "#fff39c";
+const SUN_R = 5;
 let bodies = [
-    new Body(1, 300,200,4,0),
-    new Body(1, 250,270,-1,-0.4),
-    new Body(1, 350,200,-3,0),
-    new Body(0.5, 250,250,0,0),
+    new Body(10, 300,200,4,-0.4, SUN_R , SUN_COLOR),
+    new Body(10, 250,270,-1,-0.4, SUN_R, SUN_COLOR),
+    new Body(10, 100,220,-1,-0.4, SUN_R, SUN_COLOR),
+    new Body(10, 350,200,-3,1, SUN_R, SUN_COLOR),
+    new Body(1, 250,250,0,0, 2, "#fa438c"),
+    new Body(3, 150,120,0,0, 2, "#322bff"),
+    new Body(1, 250,100,0,1, 2, "#78faff"),
 ]
 
 function setupCanvas(canvas) {
@@ -37,13 +43,13 @@ function setupCanvas(canvas) {
 //this reads the javascript array that contains all of the snowflakes and draws them onto the canvas (each snowflake has its own opacity, colour, x,y coords etc. and the draw command renders it)
 function drawBodies(ctx) {
     bodies.forEach((body) => {
-        let radius = 2;
         ctx.beginPath();
-        ctx.arc(body.x, body.y, radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'red';
+        ctx.arc(body.x, body.y, body.r, 0, 2 * Math.PI, false);
+        //ctx.fillStyle = '#ff7824';
+        ctx.fillStyle = body.color;
         ctx.fill();
         ctx.lineWidth = 5;
-        ctx.strokeStyle = '#f0d3e7';
+        ctx.strokeStyle = body.color;
         ctx.stroke();
     });
 }
