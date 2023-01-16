@@ -17,3 +17,7 @@ https://user-images.githubusercontent.com/10677873/212575022-a2b403f4-fcdc-47bc-
 ### N-body problem
 https://user-images.githubusercontent.com/10677873/212575070-589b9023-d959-4e44-b87b-551c0f7e8846.mov
 
+
+One thing that I learned was that if you want the system of bodies to remain on-screen, you have to make sure that the sum of all the initial momentums are 0 in all directions. Otherwise, the entire system will slowly drift over to one side and end up off-screen. It was also cool to see some bodies getting ejected from the system.
+
+Oh yeah, I also added a cap on the maximum acceleration a body can undergo in one frame cause when the bodies are really close together, their gravitational pulls are really strong which can cause one body to fly out of the system.
