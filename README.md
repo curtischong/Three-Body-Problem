@@ -1,6 +1,6 @@
 # Three-Body-Problem
 
-The Three Body Problem series (Rememberance of Earth's past) is my favourite sci-fi series of all time. I loved it so much that I wanted to write a simulation of it using the Forward Euler method. Here are a few demo videos of it:
+The Three Body Problem series (Rememberance of Earth's Past) is my favourite sci-fi series of all time. I loved it so much that I wanted to write a simulation of it using the Forward Euler method. Here are a few demo videos of it:
 
 ### Trisolaris
 https://user-images.githubusercontent.com/10677873/212574777-9f7fed6b-d4cd-4398-a0b1-7bb1457762f4.mov
